@@ -13,7 +13,7 @@ class BoatRepository {
   async readAll(where = {}) {
     // Execute the SQL SELECT query to retrieve all boats from the "boat" table
     const [rows] = await databaseClient.query<Rows>(
-      "select * from boat order by coord_y, coord_x",
+      "select b.id, b.coord_x, b.coord_y, b.name, t.type, t.has_treasure FROM boat AS b JOIN tile AS t ON t.coord_x = b.coord_x AND t.coord_y = b.coord_y order by coord_y, coord_x",
     );
 
     // Return the array of tiles
