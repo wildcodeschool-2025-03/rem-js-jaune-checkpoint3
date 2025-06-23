@@ -41,31 +41,17 @@ const edit: RequestHandler = async (req, res, next) => {
 const validate: RequestHandler = async (req, res, next) => {
   // your code here
   type ValidationError = {
-    field: string;
-    message: string;
     coord_x?: number;
     coord_y?: number;
   };
+
   try {
     const errors: ValidationError[] = [];
     const { coord_x, coord_y } = req.body;
-    if (typeof coord_x !== "number") {
-      errors.push({
-        field: "coord_x",
-        message: "coord_x must be a number",
-      });
-    }
-    if (typeof coord_y !== "number") {
-      errors.push({
-        field: "coord_y",
-        message: "coord_y must be a number",
-      });
-    }
+
     if (errors.length === 0) {
       const tiles = await tileRepository.readByCoordinates(coord_x, coord_y);
       if (tiles.length === 0) {
-        res.sendStatus(422);
-        return;
       }
       next();
     } else {
