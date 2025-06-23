@@ -35,7 +35,7 @@ function App() {
       setBoats(upToDateBoats);
 
       const blackPearl = upToDateBoats.find(
-        (boat) => boat.name === "Black Pearl"
+        (boat) => boat.name === "Black Pearl",
       );
 
       if (blackPearl?.has_treasure) {
@@ -56,7 +56,11 @@ function App() {
 
   const moveBoat = (id: number, coord_x: number, coord_y: number) => {
     api
-      .put(`/api/boats/${id}`, { coord_x, coord_y })
+      .put(`/api/boats/${id}`, {
+        name: blackPearl?.name || "Black Pearl",
+        coord_x,
+        coord_y,
+      })
       .then((response) => {
         if (response.status === 204) {
           reloadBoats();
@@ -89,7 +93,7 @@ function App() {
                       const boatOnTile = boats.find(
                         (boat) =>
                           boat.coord_x === tile.coord_x &&
-                          boat.coord_y === tile.coord_y
+                          boat.coord_y === tile.coord_y,
                       );
                       return (
                         <div
@@ -141,7 +145,7 @@ function App() {
                         moveBoat(
                           blackPearl.id,
                           blackPearl.coord_x,
-                          blackPearl.coord_y - 1
+                          blackPearl.coord_y - 1,
                         );
                       }}
                       className="north"
@@ -154,7 +158,7 @@ function App() {
                         moveBoat(
                           blackPearl.id,
                           blackPearl.coord_x,
-                          blackPearl.coord_y + 1
+                          blackPearl.coord_y + 1,
                         );
                       }}
                       className="south"
@@ -167,7 +171,7 @@ function App() {
                         moveBoat(
                           blackPearl.id,
                           blackPearl.coord_x + 1,
-                          blackPearl.coord_y
+                          blackPearl.coord_y,
                         );
                       }}
                       className="east"
@@ -180,7 +184,7 @@ function App() {
                         moveBoat(
                           blackPearl.id,
                           blackPearl.coord_x - 1,
-                          blackPearl.coord_y
+                          blackPearl.coord_y,
                         );
                       }}
                       className="west"
