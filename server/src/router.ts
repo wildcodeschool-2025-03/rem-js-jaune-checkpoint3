@@ -1,5 +1,5 @@
 import express from "express";
-
+import tilesActions from "./modules/tile/tileActions";
 const router = express.Router();
 
 /* ************************************************************************* */
@@ -9,13 +9,11 @@ const router = express.Router();
 import boatActions from "./modules/boat/boatActions";
 
 router.get("/api/boats", boatActions.browse);
-router.put("/api/boats/:id", boatActions.edit);
+router.put("/api/boats/:id", tilesActions.validate, boatActions.edit);
 
 import gameActions from "./modules/game/gameActions";
 
 router.post("/api/games", gameActions.add);
-
-import tilesActions from "./modules/tile/tileActions";
 
 router.get("/api/tiles", tilesActions.browse);
 router.post("/api/tiles", tilesActions.validate);

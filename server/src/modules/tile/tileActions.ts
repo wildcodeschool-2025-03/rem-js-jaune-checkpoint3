@@ -17,11 +17,22 @@ const browse: RequestHandler = async (req, res, next) => {
 
 const validate: RequestHandler = async (req, res, next) => {
   try {
-    // Validate the tile data from the request body
-    const { tileData } = await req.body;
-    res.json({ message: "Tile data is valid" });
+    const { coord_x, coord_y } = req.body;
+
+    if (coord_x == null || coord_y == null) {
+      res.sendStatus(422);
+      return;
+    }
+
+    const tiles = await tileRepository.readByCoordinates(coord_x, coord_y);
+
+    if (!tiles || tiles.length === 0) {
+      res.sendStatus(422); // si la tuile n'existe pas
+      return;
+    }
+
+    next(); // ✅ la tuile existe
   } catch (err) {
-    // Pass any errors to the error-handling middleware
     next(err);
   }
 };
