@@ -1,4 +1,5 @@
 import express from "express";
+import tileActions from "./modules/tile/tileActions";
 
 const router = express.Router();
 
@@ -9,6 +10,9 @@ const router = express.Router();
 import boatActions from "./modules/boat/boatActions";
 
 router.get("/api/boats", boatActions.browse);
+router.put("/api/boats/:id", boatActions.edit);
+
+router.get("/api/tiles", tileActions.browse);
 
 import gameActions from "./modules/game/gameActions";
 
