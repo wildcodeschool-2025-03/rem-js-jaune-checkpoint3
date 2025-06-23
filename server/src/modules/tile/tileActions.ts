@@ -11,44 +11,31 @@ const browse: RequestHandler = async (req, res, next) => {
 };
 
 const validate: RequestHandler = async (req, res, next) => {
-  type ValidationError = {
-    field: string;
-    message: string;
-  };
+  const { coord_x, coord_y } = req.body;
 
-  const errors: ValidationError[] = [];
-
-  const { name, coord_x, coord_y, has_treasure = false } = req.body;
-
-  if (name == null) {
-    errors.push({
-      field: "name",
-      message: "name is required",
-    });
+  if (
+    typeof coord_x !== "number" ||
+    typeof coord_y !== "number" ||
+    coord_x < 0 ||
+    coord_x > 11 ||
+    coord_y < 0 ||
+    coord_y > 5
+  ) {
+    res.sendStatus(422);
+    return;
   }
 
-  if (coord_x == null) {
-    errors.push({
-      field: "coord_x",
-      message: "coord_x is required",
-    });
-  } else if (typeof coord_x !== "number") {
-    errors.push({
-      field: "coord_x",
-      message: "coord_x must be a number",
-    });
-  }
+  try {
+    const tiles = await tileRepository.readByCoordinates(coord_x, coord_y);
 
-  if (coord_y == null) {
-    errors.push({
-      field: "coord_y",
-      message: "coord_y is required",
-    });
-  } else if (typeof coord_y !== "number") {
-    errors.push({
-      field: "coord_y",
-      message: "coord_y must be a number",
-    });
+    if (!Array.isArray(tiles) || tiles.length === 0) {
+      res.sendStatus(422);
+      return;
+    }
+
+    next();
+  } catch (err) {
+    next(err);
   }
 };
 
