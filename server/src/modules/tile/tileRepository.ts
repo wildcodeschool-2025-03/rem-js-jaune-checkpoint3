@@ -27,7 +27,7 @@ class TileRepository {
       "select * from tile where coord_x = ? and coord_y = ?",
       [coordX, coordY],
     );
-    return rows;
+    return rows as Tile[];
   }
 
   async getRandomIsland() {

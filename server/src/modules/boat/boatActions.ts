@@ -5,10 +5,11 @@ import boatRepository from "./boatRepository";
 const browse: RequestHandler = async (req, res, next) => {
   try {
     // Fetch all boats from the database
-    const boats = await boatRepository.readAll();
+
+    const tile = await boatRepository.readAll();
 
     // Respond with the boats in JSON format
-    res.json(boats);
+    res.json(tile);
   } catch (err) {
     // Pass any errors to the error-handling middleware
     next(err);
@@ -21,7 +22,6 @@ const edit: RequestHandler = async (req, res, next) => {
     // Update a specific category based on the provided ID
     const boat = {
       id: Number(req.params.id),
-
       coord_x: Number(req.body.coord_x),
       coord_y: Number(req.body.coord_y),
     };
