@@ -4,7 +4,7 @@ import boatRepository from "../boat/boatRepository";
 import tileRepository from "../tile/tileRepository";
 
 const add: RequestHandler = async (req, res, next) => {
-  const blackPearl = (await boatRepository.readAll()).find(
+  const blackPearl = (await boatRepository.readAll({})).find(
     (boat) => boat.name === "Black Pearl",
   );
 
